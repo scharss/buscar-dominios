@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificar Disponibilidad de Dominio</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+        }
+        .header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px 10px 0 0;
+        }
+        .result {
+            margin-top: 20px;
+        }
+    </style>
+    <script>
+        function showResult(result) {
+            document.getElementById('result').innerHTML = result;
+        }
+        
+        function checkDomain(event) {
+            event.preventDefault();
+            const form = document.getElementById('domainForm');
+            const formData = new FormData(form);
+
+            fetch('check_domain.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                showResult(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Verificar Disponibilidad de Dominio</h1>
+        </div>
+        <form id="domainForm" action="check_domain.php" method="post" onsubmit="return checkDomain(event)" class="mt-4">
+            <div class="form-row">
+                <div class="col-md-8 mb-3">
+                    <label for="domain">Ingrese el nombre del dominio:</label>
+                    <input type="text" id="domain" name="domain" class="form-control" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="tld">Seleccione el TLD:</label>
+                    <select id="tld" name="tld" class="form-control" required>
+                        <option value=".com">.com</option>
+                        <option value=".net">.net</option>
+                        <option value=".org">.org</option>
+                        <option value=".info">.info</option>
+                        <option value=".biz">.biz</option>
+                        <option value=".co">.co</option>
+                        <option value=".io">.io</option>
+                        <option value=".dev">.dev</option>
+                        <option value=".me">.me</option>
+                        <option value=".app">.app</option>
+                        <option value=".online">.online</option>
+                        <option value=".store">.store</option>
+                        <option value=".xyz">.xyz</option>
+                        <option value=".tech">.tech</option>
+                        <option value=".site">.site</option>
+                        <option value=".website">.website</option>
+                        <option value=".space">.space</option>
+                        <option value=".shop">.shop</option>
+                        <option value=".live">.live</option>
+                        <option value=".us">.us</option>
+                        <option value=".ca">.ca</option>
+                        <option value=".uk">.uk</option>
+                        <!-- Añadir más TLDs según sea necesario -->
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Verificar</button>
+        </form>
+        <div id="result" class="result"></div>
+    </div>
+</body>
+</html>
